@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import App from './App.vue';
 import Vus from '../dist/vus.js';
-// import '../dist/styles/vus.css';
+import '../dist/styles/vus.css';
 
 Vue.use(Vus,{
     icons: require.context('./svg', false, /\.svg$/)
