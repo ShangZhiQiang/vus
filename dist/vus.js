@@ -77,12 +77,22 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ (function(module, exports) {
 
-var core = module.exports = { version: '2.5.7' };
+var core = module.exports = { version: '2.6.11' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// Thank's IE8 for his funny defineProperty
+module.exports = !__webpack_require__(2)(function () {
+  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
+});
+
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports) {
 
 module.exports = function (exec) {
@@ -95,7 +105,7 @@ module.exports = function (exec) {
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports) {
 
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
@@ -107,22 +117,12 @@ if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports) {
 
 module.exports = function (it) {
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// Thank's IE8 for his funny defineProperty
-module.exports = !__webpack_require__(1)(function () {
-  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
-});
 
 
 /***/ }),
@@ -678,7 +678,7 @@ module.exports = function (it) {
 /* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var global = __webpack_require__(2);
+var global = __webpack_require__(3);
 var core = __webpack_require__(0);
 var ctx = __webpack_require__(39);
 var hide = __webpack_require__(41);
@@ -2424,7 +2424,7 @@ module.exports = function (key) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var core = __webpack_require__(0);
-var global = __webpack_require__(2);
+var global = __webpack_require__(3);
 var SHARED = '__core-js_shared__';
 var store = global[SHARED] || (global[SHARED] = {});
 
@@ -2433,7 +2433,7 @@ var store = global[SHARED] || (global[SHARED] = {});
 })('versions', []).push({
   version: core.version,
   mode: __webpack_require__(35) ? 'pure' : 'global',
-  copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
+  copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
 });
 
 
@@ -2472,7 +2472,7 @@ module.exports = (
 // most Object methods by ES6 should accept primitives
 var $export = __webpack_require__(16);
 var core = __webpack_require__(0);
-var fails = __webpack_require__(1);
+var fails = __webpack_require__(2);
 module.exports = function (KEY, exec) {
   var fn = (core.Object || {})[KEY] || Object[KEY];
   var exp = {};
@@ -2523,7 +2523,7 @@ module.exports = function (it) {
 
 var dP = __webpack_require__(42);
 var createDesc = __webpack_require__(47);
-module.exports = __webpack_require__(4) ? function (object, key, value) {
+module.exports = __webpack_require__(1) ? function (object, key, value) {
   return dP.f(object, key, createDesc(1, value));
 } : function (object, key, value) {
   object[key] = value;
@@ -2540,7 +2540,7 @@ var IE8_DOM_DEFINE = __webpack_require__(44);
 var toPrimitive = __webpack_require__(46);
 var dP = Object.defineProperty;
 
-exports.f = __webpack_require__(4) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+exports.f = __webpack_require__(1) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
   anObject(O);
   P = toPrimitive(P, true);
   anObject(Attributes);
@@ -2557,7 +2557,7 @@ exports.f = __webpack_require__(4) ? Object.defineProperty : function defineProp
 /* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(3);
+var isObject = __webpack_require__(4);
 module.exports = function (it) {
   if (!isObject(it)) throw TypeError(it + ' is not an object!');
   return it;
@@ -2568,7 +2568,7 @@ module.exports = function (it) {
 /* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = !__webpack_require__(4) && !__webpack_require__(1)(function () {
+module.exports = !__webpack_require__(1) && !__webpack_require__(2)(function () {
   return Object.defineProperty(__webpack_require__(45)('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
@@ -2577,8 +2577,8 @@ module.exports = !__webpack_require__(4) && !__webpack_require__(1)(function () 
 /* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(3);
-var document = __webpack_require__(2).document;
+var isObject = __webpack_require__(4);
+var document = __webpack_require__(3).document;
 // typeof document.createElement is 'object' in old IE
 var is = isObject(document) && isObject(document.createElement);
 module.exports = function (it) {
@@ -2591,7 +2591,7 @@ module.exports = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.1 ToPrimitive(input [, PreferredType])
-var isObject = __webpack_require__(3);
+var isObject = __webpack_require__(4);
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
 module.exports = function (it, S) {
@@ -2678,6 +2678,7 @@ $export($export.S + $export.F, 'Object', { assign: __webpack_require__(52) });
 "use strict";
 
 // 19.1.2.1 Object.assign(target, source, ...)
+var DESCRIPTORS = __webpack_require__(1);
 var getKeys = __webpack_require__(11);
 var gOPS = __webpack_require__(53);
 var pIE = __webpack_require__(54);
@@ -2686,7 +2687,7 @@ var IObject = __webpack_require__(14);
 var $assign = Object.assign;
 
 // should work with symbols and should have deterministic property order (V8 bug)
-module.exports = !$assign || __webpack_require__(1)(function () {
+module.exports = !$assign || __webpack_require__(2)(function () {
   var A = {};
   var B = {};
   // eslint-disable-next-line no-undef
@@ -2707,7 +2708,10 @@ module.exports = !$assign || __webpack_require__(1)(function () {
     var length = keys.length;
     var j = 0;
     var key;
-    while (length > j) if (isEnum.call(S, key = keys[j++])) T[key] = S[key];
+    while (length > j) {
+      key = keys[j++];
+      if (!DESCRIPTORS || isEnum.call(S, key)) T[key] = S[key];
+    }
   } return T;
 } : $assign;
 
