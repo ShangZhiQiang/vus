@@ -1,5 +1,7 @@
 # vus
 
+English | [简体中文](./README-zh-CN.md)
+
 ###### yarn install
 ```
 yarn add vus
@@ -17,6 +19,3 @@ import 'vus/dist/styles/vus.css'
 
 Vue.use(Vus);
 ```
-
-
-##### QQ交流群：705023181
